@@ -87,14 +87,13 @@ Detailed experiments are documented in `04_classification_baseline.ipynb` and `e
 
 ## 🧠 Design Decisions
 
-| Decision                                        | Reasoning                                                                      |
-| ----------------------------------------------- | ------------------------------------------------------------------------------ |
-| Chronological train/test split                  | Prevents time-series data leakage — the test period was held out entirely      |
-| 1-minute aggregation within continuity segments | Prevents averaging across timestamp gaps and improved Anomaly Detection        |
-| Failure #4 excluded from pre-failure analysis   | A 14h11m gap precedes it, making pre-failure analysis unreliable               |
-| Failure #4 retained in target labels            | The documented failure period itself contains usable observations              |
-| No RUL on MetroPT-3                             | Only 3–4 independent failure events — too few for a reliable regression target |
-| `diff` / lag features tested separately         | No measurable benefit in the clean A/B experiment                              |
+| Decision                                        | Reasoning                                                                 |
+| ----------------------------------------------- | ------------------------------------------------------------------------- |
+| Chronological train/test split                  | Prevents time-series data leakage — the test period was held out entirely |
+| 1-minute aggregation within continuity segments | Prevents averaging across timestamp gaps and improved Anomaly Detection   |
+| Failure #4 excluded from pre-failure analysis   | A 14h11m gap precedes it, making pre-failure analysis unreliable          |
+| Failure #4 retained in target labels            | The documented failure period itself contains usable observations         |
+| `diff` / lag features tested separately         | No measurable benefit in the clean A/B experiment                         |
 
 Full trade-off log: `NOTES.md`
 
@@ -114,6 +113,10 @@ A dark-themed, multi-page Streamlit application built on the trained models — 
 | Explainability    | Why an observation was flagged |
 | Data Explorer     | Underlying sensor data         |
 
+### 🔗 Live Dashboard
+
+**[Launch MetroGuard AI →](https://industrial-ai-command-center-8nexgtcywmyetqjduxt7r4.streamlit.app/)**
+
 ### Run Locally
 
 ```bash
@@ -121,8 +124,6 @@ cd dashboard
 pip install -r requirements.txt
 streamlit run app.py
 ```
-
-🔗 **Live Dashboard:** 
 
 ---
 
@@ -156,9 +157,6 @@ industrial-ai-command-center/
 │   ├── pages/
 │   └── requirements.txt
 │
-├── rul_case_study/
-│   └── NASA CMAPSS
-│
 └── assets/
     └── images/
 ```
@@ -171,7 +169,6 @@ industrial-ai-command-center/
 * Results should not be assumed to generalize to unseen failure modes.
 * The One-Class SVM was evaluated across independent training samples, but the dataset still contains a limited number of independent failure events.
 * The project does not claim production-level reliability from this dataset alone.
-* RUL prediction was deliberately **not** attempted on MetroPT-3 because the available failure history is insufficient for a reliable regression target.
 
 ---
 
@@ -185,8 +182,6 @@ Potential production-oriented improvements include:
 * Confidence-tiered alerts
 * Periodic model retraining
 * Additional failure modes and operational data
-
-A separate **RUL case study using NASA CMAPSS** is included under `rul_case_study/`.
 
 ---
 
